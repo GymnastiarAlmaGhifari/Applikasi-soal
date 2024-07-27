@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                 String               @id @default(uuid())
+  name               String               @db.VarChar(255)
+  email              String               @unique(map: "email") @db.VarChar(255)
+  address            String?              @db.VarChar(255)
+  password           String?              @db.VarChar(255)
+  image              String?              @default("https://w7.pngwing.com/pngs/177/551/png-transparent-user-interface-design-computer-icons-default-stephen-salazar-graphy-user-interface-design-computer-wallpaper-sphere-thumbnail.png") @db.VarChar(255)
+  role               Role                 @default(user)
+  createdAt          DateTime             @default(now()) @db.Timestamp(0)
+  updatedAt          DateTime             @default(now()) @db.Timestamp(0)
+}
+
+enum Role {
+  user
+  admin
+}

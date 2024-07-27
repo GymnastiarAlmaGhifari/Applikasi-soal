@@ -44,24 +44,6 @@ module.exports = {
       fontFamily: {
         sans: ['Poppins', ...fontFamily.sans],
       },
-      keyframes: {
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
-      },
-      backgroundImage: {
-        doc: 'url(/assets/images/doc.png)',
-        modal: 'url(/assets/images/modal.png)',
-      },
-      animation: {
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
     },
   },
   plugins: [require("tailwindcss-animate")],

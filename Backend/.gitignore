@@ -1,0 +1,7 @@
+node_modules
+# Keep environment variables out of version control
+.env
+dist
+compose
+bucket-425203-62e8f72a3fa0.json
+key/gcp-key.json
