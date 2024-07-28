@@ -1,5 +1,10 @@
 import { TriviaApiResponse } from "@/types";
 
+// settriviaData
+export const setTriviaData = (data: TriviaApiResponse) => {
+  localStorage.setItem("triviaData", JSON.stringify(data));
+};
+
 // Mengambil data trivia dari localStorage
 export const loadTriviaData = (): TriviaApiResponse | null => {
   const storedTriviaData = localStorage.getItem("triviaData");
@@ -16,3 +21,4 @@ export const saveAnswer = (questionIndex: number, answer: string) => {
 export const getSavedAnswer = (questionIndex: number): string | null => {
   return localStorage.getItem(`answer${questionIndex}`);
 };
+

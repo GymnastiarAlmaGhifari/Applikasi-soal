@@ -1,4 +1,3 @@
-// Mengimpor hook dan tipe data yang diperlukan
 import { useState, useEffect, useRef } from "react";
 import { TriviaApiResponse } from "@/types";
 import { useNavigate } from "react-router-dom";
@@ -10,18 +9,21 @@ import {
   calculateElapsedTime,
 } from "@/services/TimerService";
 
-// Hook kustom untuk menangani logika trivia
 export const useTrivia = () => {
-  // State untuk menyimpan data trivia, indeks soal saat ini, waktu yang tersisa, dan status timer
   const [triviaData, setTriviaData] = useState<TriviaApiResponse | null>(null);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [minutes, setMinutes] = useState<number>(1);
-  const [seconds, setSeconds] = useState<number>(0);
+
+  const initializeTime = () => {
+    const [storedMinutes, storedSeconds] = loadTimer();
+    return [storedMinutes || 1, storedSeconds || 0]; // Default to 1 minute if no data is found
+  };
+
+  const [[minutes, seconds], setTime] = useState(initializeTime);
   const [isTimerActive, setIsTimerActive] = useState<boolean>(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const navigate = useNavigate();
 
-  // Memuat data trivia saat komponen pertama kali dirender
+
   useEffect(() => {
     const data = loadTriviaData();
     if (data) {
@@ -31,12 +33,7 @@ export const useTrivia = () => {
     }
   }, []);
 
-  // Memuat timer dari localStorage dan menghitung waktu yang telah berlalu
   useEffect(() => {
-    const [storedMinutes, storedSeconds] = loadTimer();
-    setMinutes(storedMinutes);
-    setSeconds(storedSeconds);
-
     const storedLastIndex = localStorage.getItem("lastQuestionIndex");
     if (storedLastIndex) {
       setCurrentQuestionIndex(Number(storedLastIndex));
@@ -46,31 +43,28 @@ export const useTrivia = () => {
     if (lastUpdate) {
       const [elapsedMinutes, elapsedSeconds] = calculateElapsedTime(
         lastUpdate,
-        storedMinutes,
-        storedSeconds
+        minutes,
+        seconds
       );
-      setMinutes(elapsedMinutes);
-      setSeconds(elapsedSeconds);
+      setTime([elapsedMinutes, elapsedSeconds]);
     }
-  }, []);
+  }, [minutes, seconds]);
 
-  // Menjalankan timer jika aktif dan mengupdate state menit dan detik
   useEffect(() => {
     if (isTimerActive) {
       timerRef.current = setInterval(() => {
-        setSeconds((prevSeconds) => {
+        setTime(([prevMinutes, prevSeconds]) => {
           if (prevSeconds === 0) {
-            if (minutes === 0) {
+            if (prevMinutes === 0) {
               clearInterval(timerRef.current as NodeJS.Timeout);
               setIsTimerActive(false);
               clearTimer();
               navigate("/hasil");
-              return 0;
+              return [0, 0];
             }
-            setMinutes((prevMinutes) => prevMinutes - 1);
-            return 59;
+            return [prevMinutes - 1, 59];
           } else {
-            return prevSeconds - 1;
+            return [prevMinutes, prevSeconds - 1];
           }
         });
       }, 1000);
@@ -79,13 +73,12 @@ export const useTrivia = () => {
     }
   }, [isTimerActive, minutes, seconds, navigate]);
 
-  // Menyimpan timer saat menit atau detik berubah
   useEffect(() => {
     if (isTimerActive) {
       saveTimer(minutes, seconds);
       localStorage.setItem("lastUpdate", Date.now().toString());
     }
-  }, [minutes, seconds]);
+  }, [minutes, seconds, isTimerActive]);
 
   return {
     triviaData,

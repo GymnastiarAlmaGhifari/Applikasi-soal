@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SchemaContentSoal } from "@/lib/zodSchema";
 import { useTrivia } from "@/hooks/useTrivia";
-import { saveAnswer } from "@/services/TriviaService";
+import { saveAnswer, getSavedAnswer } from "@/services/TriviaService";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import Soalitem from "@/components/common/Soalitem";
@@ -29,6 +29,12 @@ const ContentSoal: React.FC = () => {
     setCurrentQuestionIndex,
     navigate,
   } = useTrivia();
+
+  // terapkan getSavedAnswer untuk mendapatkan jawaban yang telah disimpan
+  useEffect(() => {
+    const savedAnswer = getSavedAnswer(currentQuestionIndex);
+    savedAnswer && form.setValue("type", savedAnswer);
+  }, [currentQuestionIndex, form]);
 
   const onSubmit = () => {
     triviaData &&
@@ -57,15 +63,14 @@ const ContentSoal: React.FC = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-2xl mx-2">
         <CardHeader>
-          <CardTitle className="mx-auto">Pertanyaan Trivia</CardTitle>
+          <CardTitle className="mx-auto">Question Trivia</CardTitle>
         </CardHeader>
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <div className="mb-4 text-center">
                 <p className="font-semibold">
-                  Waktu tersisa:{" "}
-                  {`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}
+                  Time Left: {`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}
                 </p>
               </div>
               <div className="mb-6">
@@ -88,12 +93,12 @@ const ContentSoal: React.FC = () => {
                   onClick={handleBack}
                   disabled={currentQuestionIndex === 0}
                 >
-                  Kembali
+                  Back
                 </Button>
                 <Button type="submit">
                   {currentQuestionIndex === triviaData.results.length - 1
-                    ? "Selesai"
-                    : "Lanjut"}
+                    ? "Finish"
+                    : "Next"}
                 </Button>
               </div>
             </form>

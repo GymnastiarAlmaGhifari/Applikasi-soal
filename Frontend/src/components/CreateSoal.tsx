@@ -30,6 +30,8 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
+import { saveTimer } from "@/services/TimerService";
+import { setTriviaData } from "@/services/TriviaService";
 
 const CreateSoal: React.FC = () => {
   const form = useForm<CreateQuizFormValues>({
@@ -52,8 +54,8 @@ const CreateSoal: React.FC = () => {
       const response = await fetch(url);
       const triviaData: TriviaApiResponse = await response.json();
 
-      localStorage.setItem("triviaData", JSON.stringify(triviaData));
-      localStorage.setItem("quizTimer", data.timer.toString());
+      setTriviaData(triviaData);
+      saveTimer(data.timer, 0); // Save timer value to localStorage
 
       navigate("/soal");
     } catch (error) {
@@ -170,7 +172,7 @@ const CreateSoal: React.FC = () => {
                 name="timer"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Timer (seconds)</FormLabel>
+                    <FormLabel>Timer (Minutes)</FormLabel>
                     <FormControl>
                       <Input
                         type="number"

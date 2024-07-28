@@ -5,6 +5,7 @@ export interface TriviaApiResult {
   question: string;
   correct_answer: string;
   incorrect_answers: string[];
+  question_answered: string;
 }
 
 export interface TriviaApiResponse {

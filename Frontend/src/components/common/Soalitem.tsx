@@ -49,10 +49,7 @@ const Soalitem: React.FC<SoalitemProps> = ({
                   className="flex flex-col mt-2"
                 >
                   {answers.sort().map((answer, index) => (
-                    <FormItem
-                      key={index}
-                      className="flex items-center gap-3"
-                    >
+                    <FormItem key={index} className="flex items-center gap-3">
                       <FormControl>
                         {/* RadioGroupItem untuk setiap jawaban */}
                         <RadioGroupItem value={answer} />
