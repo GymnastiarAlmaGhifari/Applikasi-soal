@@ -7,25 +7,27 @@ interface ResultItemProps {
 }
 
 const ResultItem: React.FC<ResultItemProps> = ({ index, question }) => {
-  // Mengambil jawaban yang dipilih dari localStorage berdasarkan indeks soal
+  // Retrieve the selected answer from localStorage based on the question index
   const selectedAnswer = localStorage.getItem(`answer${index}`);
 
+  // Determine the color for the selected answer: green if correct, red if incorrect
+  const answerColor =
+    selectedAnswer === question.correct_answer
+      ? "text-green-500"
+      : "text-red-500";
+
   return (
-    <div>
-      <h2>
-        Q{index + 1}: {question.question}
+    <div className="py-4 border-b border-gray-300">
+      <h2 className="mb-2 text-lg font-bold">
+        Q{index + 1}:{" "}
+        <span dangerouslySetInnerHTML={{ __html: question.question }} />
       </h2>
-      <p>
-        Jawaban Anda:{" "}
-        <strong
-          style={{
-            color: selectedAnswer === question.correct_answer ? "green" : "red",
-          }}
-        >
-          {selectedAnswer ?? "Tidak ada jawaban"}
-        </strong>
+      <p className={`mb-1 ${answerColor}`}>
+        Jawaban Anda: <strong>{selectedAnswer ?? "No Answer"}</strong>
       </p>
-      <p>Jawaban Benar: {question.correct_answer}</p>
+      <p className="text-emerald-600">
+        Jawaban Benar: <strong>{question.correct_answer}</strong>
+      </p>
     </div>
   );
 };

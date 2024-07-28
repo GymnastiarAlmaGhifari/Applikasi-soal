@@ -8,9 +8,14 @@ export const SchemaCreateSoal = z.object({
     .nonnegative("Amount is required"),
   difficulty: z.string().optional().default(""),
   type: z.string().optional().default(""),
-  timer: z.number().optional().default(5), 
+  timer: z.number().optional().default(5),
 });
 
 export const SchemaContentSoal = z.object({
   type: z.string().optional().default(""),
+});
+
+export const SchemaLogin = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(8, "Minimum password length is 8"),
 });

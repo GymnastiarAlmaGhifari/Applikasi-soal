@@ -1,6 +1,6 @@
 /* eslint-disable no-useless-catch */
 import axios from "axios";
-import { CreateQuizFormValues } from "@/types";
+import { CreateQuizFormValues, RegisterPayload } from "@/types";
 
 const API_BASE_URL = `${import.meta.env.VITE_BACKEND_URL}`; // Mengambil URL dari environment variables
 
@@ -19,10 +19,10 @@ const setAuthHeader = () => {
 // Menetapkan header autentikasi setiap kali membuat permintaan
 setAuthHeader();
 
-export const login = async (username: string, password: string) => {
+export const login = async (email: string, password: string) => {
   try {
     const response = await api.post("/auth/login", {
-      email: username,
+      email,
       password,
     });
     localStorage.setItem("user", JSON.stringify(response.data));
@@ -60,11 +60,6 @@ export const logout = async () => {
   }
 };
 
-export interface RegisterPayload {
-  name: string;
-  email: string;
-  password: string;
-}
 
 export const registerUser = async (
   payload: RegisterPayload

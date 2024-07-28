@@ -46,12 +46,12 @@ const Soalitem: React.FC<SoalitemProps> = ({
                     field.onChange(value); // Update nilai kontrol form
                     onAnswerChange(value); // Callback untuk perubahan jawaban
                   }}
-                  className="flex flex-col space-y-1"
+                  className="flex flex-col mt-2"
                 >
                   {answers.sort().map((answer, index) => (
                     <FormItem
                       key={index}
-                      className="flex items-center space-x-3 space-y-0"
+                      className="flex items-center gap-3"
                     >
                       <FormControl>
                         {/* RadioGroupItem untuk setiap jawaban */}
