@@ -10,8 +10,6 @@ const Header = () => {
     try {
       await apiLogout();
       contextLogout(); // Update context to reflect logout
-      // Optionally, redirect to login page after logout
-      // navigate("/login");
     } catch (error) {
       setError("Logout failed. Please try again.");
     }
@@ -21,7 +19,8 @@ const Header = () => {
     <div>
       <h1>Welcome, {user?.data.name}</h1>
       {error && <p>{error}</p>}
-      <button onClick={handleLogout}>Logout</button>
+      <button onClick={handleLogout}>Logout</button>\
+      
     </div>
   );
 };
