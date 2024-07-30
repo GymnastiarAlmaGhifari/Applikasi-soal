@@ -1,14 +1,7 @@
-<p align="center"> 
-  <img src="public/images/Project Logo.png" alt="HAR Logo" width="80px" height="80px">
-</p>
 <h1 align="center"> Quiz App </h1>
 <h3 align="center"> A quiz application that can be used to create and answer questions. </h3>
 
 </br>
-
-<p align="center"> 
-  <img src="https://github.com/7exp/backend/blob/main/public/images/giphy.gif" alt="Sample app" width="70%" height="70%">
-</p>
 
 ![-----------------------------------------------------](https://github.com/GymnastiarAlmaGhifari/Applikasi-soal/blob/main/Frontend/public/image.png)
 
